@@ -5,11 +5,15 @@
 #include "esp_wpa2.h"  
 #include <board_mapping.h>
 
+#define LED_BUILTIN 13
+
 // Fonction d'initialisation des GPIO
 int initialisationBroches(void)
 {
     // Configuration des broches
     // pinMode(GPIO_B1, INPUT); // Exemple
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
   
 
   return 0;
