@@ -11,6 +11,10 @@
 #define printer_name "Prusa i3 MK3 - Magasin P315"
 #define printer_state "printing"
 
+#define printer2_id 21937
+#define printer2_name "Prusa i3 MK3 - P402"
+#define printer2_state "paused"
+
 int arreter_impression()
 {
     return 0;
@@ -18,9 +22,6 @@ int arreter_impression()
 
 int ask_printer_name()
 {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(100);
-    digitalWrite(LED_BUILTIN, LOW);
     HTTPClient http;
 
     // Spécification de l'URL
@@ -74,11 +75,11 @@ int ask_printer_name()
                 {
                     if (printerObj["printer"]["state"] == printer_state)
                     {
-                        digitalWrite(LED_BUILTIN, HIGH);
+                        //digitalWrite(LED_BUILTIN, HIGH);
                     }
                     else
                     {
-                        digitalWrite(LED_BUILTIN, LOW);
+                        //digitalWrite(LED_BUILTIN, LOW);
                     }
                 }
             }
