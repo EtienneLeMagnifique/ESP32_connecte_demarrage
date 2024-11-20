@@ -3,6 +3,7 @@
 
 #include <simplyprint.h>
 
-int arreter_impression(int printer_id);
+int arreter_impression();
+int ask_printer_name();
 
 #endif
