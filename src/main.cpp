@@ -14,8 +14,10 @@
 void setup() {
   initialisationSerie();
   initialisationWifi();
+  initialisationBroches();
 }
 
 void loop() {
-    
+    ask_printer_name();
+    delay(2000);
 }
