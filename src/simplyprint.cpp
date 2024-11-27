@@ -17,6 +17,77 @@
 
 int arreter_impression()
 {
+    HTTPClient http;
+
+    // Spécification de l'URL
+    http.begin("https://api.simplyprint.io/12305/printers/actions/Cancel");
+
+    // Ajout des headers
+    http.addHeader("accept", "application/json");
+    http.addHeader("X-API-KEY", API_KEY);
+
+    // Envoyer la requête POST
+    int httpResponseCode = http.POST("{}");
+
+    // Vérifier la réponse
+    if (httpResponseCode > 0)
+    {
+        String response = http.getString();
+        // Serial.println("Réponse du serveur: " + response);
+
+        // Parse de la réponse JSON
+        const size_t capacity = 10 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(2) + 1024;
+        DynamicJsonDocument doc(capacity);
+        deserializeJson(doc, response);
+
+        // Vérifier le statut
+        if (doc["status"] == true)
+        {
+            Serial.println("Commande d'arret recu");
+        }
+        else
+        {
+            Serial.println("Erreur lors de la requête POST: " + String(httpResponseCode));
+        }
+    }
+    return 0;
+}
+
+int pause_impression(){
+    HTTPClient http;
+
+    // Spécification de l'URL
+    http.begin("https://api.simplyprint.io/12305/printers/actions/Pause");
+
+    // Ajout des headers
+    http.addHeader("accept", "application/json");
+    http.addHeader("X-API-KEY", API_KEY);
+
+    // Envoyer la requête POST
+    int httpResponseCode = http.POST("{}");
+
+    // Vérifier la réponse
+    if (httpResponseCode > 0)
+    {
+        String response = http.getString();
+        // Serial.println("Réponse du serveur: " + response);
+
+        // Parse de la réponse JSON
+        const size_t capacity = 10 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(2) + 1024;
+        DynamicJsonDocument doc(capacity);
+        deserializeJson(doc, response);
+
+        // Vérifier le statut
+        if (doc["status"] == true)
+        {
+            Serial.println("Commande de pause recu");
+        }
+        else
+        {
+            Serial.println("Erreur lors de la requête POST: " + String(httpResponseCode));
+        }
+    }
+
     return 0;
 }
 
