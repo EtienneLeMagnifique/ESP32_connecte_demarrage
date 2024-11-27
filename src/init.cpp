@@ -22,11 +22,12 @@ int initialisationBroches(void)
     // pinMode(GPIO_B1, INPUT); // Exemple
     //pinMode(LED_BUILTIN, OUTPUT);
     //digitalWrite(LED_BUILTIN, LOW);
-    pinMode(B01, INPUT);
-    pinMode(B02, INPUT);
-    pinMode(B03, INPUT);
-    pinMode(B04, INPUT);
-    pinMode(B05, INPUT);
+    
+    //pinMode(B01, INPUT);
+    //pinMode(B02, INPUT);
+    //pinMode(B03, INPUT);
+    //pinMode(B04, INPUT);
+    //pinMode(B05, INPUT);
 
     
 
