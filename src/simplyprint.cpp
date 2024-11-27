@@ -15,6 +15,30 @@
 #define printer2_name "Prusa i3 MK3 - P402"
 #define printer2_state "paused"
 
+int fail_impression()
+{
+}
+
+int regret_impression()
+{
+}
+
+int resume_impression()
+{
+}
+
+int clearbed_impression()
+{
+}
+
+int failorpass_impression()
+{
+}
+
+int score_impression()
+{
+}
+
 int arreter_impression()
 {
     HTTPClient http;
@@ -53,7 +77,8 @@ int arreter_impression()
     return 0;
 }
 
-int pause_impression(){
+int pause_impression()
+{
     HTTPClient http;
 
     // Spécification de l'URL
@@ -146,11 +171,11 @@ int ask_printer_name()
                 {
                     if (printerObj["printer"]["state"] == printer_state)
                     {
-                        //digitalWrite(LED_BUILTIN, HIGH);
+                        // digitalWrite(LED_BUILTIN, HIGH);
                     }
                     else
                     {
-                        //digitalWrite(LED_BUILTIN, LOW);
+                        // digitalWrite(LED_BUILTIN, LOW);
                     }
                 }
             }
