@@ -15,36 +15,54 @@
 #define printer2_name "Prusa i3 MK3 - P402"
 #define printer2_state "paused"
 
-int fail_impression()
-{
-}
-
-int regret_impression()
-{
-}
-
-int resume_impression()
-{
-}
-
-int clearbed_impression()
-{
-}
-
-int failorpass_impression()
-{
-}
-
-int score_impression()
-{
-}
-
-int arreter_impression()
+int cancel_impression(int id)
 {
     HTTPClient http;
 
     // Spécification de l'URL
     http.begin("https://api.simplyprint.io/12305/printers/actions/Cancel");
+
+    // Ajout des headers
+    http.addHeader("accept", "application/json");
+    http.addHeader("X-API-KEY", API_KEY);
+
+    // Envoyer la requête POST
+    String payload = "{";
+    payload += "\"reason\":" + String(id);
+    payload += "}";
+
+    // Envoyer la requête POST avec le JSON
+    int httpResponseCode = http.POST(payload);
+
+    // Vérifier la réponse
+    if (httpResponseCode > 0)
+    {
+        String response = http.getString();
+
+        // Parse de la réponse JSON
+        const size_t capacity = 10 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(2) + 1024;
+        DynamicJsonDocument doc(capacity);
+        deserializeJson(doc, response);
+
+        // Vérifier le statut
+        if (doc["status"] == true)
+        {
+            Serial.println("Commande recu");
+        }
+        else
+        {
+            Serial.println("Erreur lors de la requête POST: " + String(httpResponseCode));
+        }
+    }
+    return 0;
+}
+
+int resume_impression()
+{
+    HTTPClient http;
+
+    // Spécification de l'URL
+    http.begin("https://api.simplyprint.io/12305/printers/actions/Resume");
 
     // Ajout des headers
     http.addHeader("accept", "application/json");
@@ -67,7 +85,66 @@ int arreter_impression()
         // Vérifier le statut
         if (doc["status"] == true)
         {
-            Serial.println("Commande d'arret recu");
+            Serial.println("Commande recu");
+        }
+        else
+        {
+            Serial.println("Erreur lors de la requête POST: " + String(httpResponseCode));
+        }
+    }
+    return 0;
+}
+
+int clearbed_impression(bool success, int rating)
+{
+    HTTPClient http;
+
+    // Spécification de l'URL
+    http.begin("https://api.simplyprint.io/12305/printers/actions/ClearBed");
+
+    // Ajout des headers
+    http.addHeader("accept", "application/json");
+    http.addHeader("X-API-KEY", API_KEY);
+
+    if (success == true)
+    {
+        // Envoyer la requête POST
+        String payload = "{";
+        payload += "\"success\":" + String(success ? "true" : "false") + ",";
+        payload += "\"rating\":" + String(rating);
+        payload += "}";
+    }
+    else
+    {
+        String payload = "{";
+        payload += "\"success\":" + String(success ? "true" : "false") + ",";
+        payload += "}";
+    }
+
+    // Envoyer la requête POST
+    String payload = "{";
+    payload += "\"success\":" + String(success ? "true" : "false") + ",";
+    payload += "\"rating\":" + String(rating);
+    payload += "}";
+
+    // Envoyer la requête POST avec le JSON
+    int httpResponseCode = http.POST(payload);
+
+    // Vérifier la réponse
+    if (httpResponseCode > 0)
+    {
+        String response = http.getString();
+        // Serial.println("Réponse du serveur: " + response);
+
+        // Parse de la réponse JSON
+        const size_t capacity = 10 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(2) + 1024;
+        DynamicJsonDocument doc(capacity);
+        deserializeJson(doc, response);
+
+        // Vérifier le statut
+        if (doc["status"] == true)
+        {
+            Serial.println("Commande recu");
         }
         else
         {

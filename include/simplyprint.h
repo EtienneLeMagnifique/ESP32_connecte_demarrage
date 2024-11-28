@@ -3,14 +3,10 @@
 
 #include <simplyprint.h>
 
-int arreter_impression();
 int ask_printer_name();
 int pause_impression();
-int fail_impression();
-int regret_impression();
+int cancel_impression();
 int resume_impression();
 int clearbed_impression();
-int failorpass_impression();
-int score_impression();
 
 #endif
