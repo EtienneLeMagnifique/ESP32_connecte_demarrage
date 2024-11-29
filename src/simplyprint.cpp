@@ -15,6 +15,52 @@
 #define printer2_name "Prusa i3 MK3 - P402"
 #define printer2_state "paused"
 
+float getPrice_impression(){
+    float prix = 0;
+    HTTPClient http;
+
+    // Spécification de l'URL
+    http.begin("https://api.simplyprint.io/12305/jobs/GetPaginatedPrintJobs");
+
+    // Ajout des headers
+    http.addHeader("accept", "application/json");
+    http.addHeader("X-API-KEY", API_KEY);
+
+    // Envoyer la requête POST
+    int httpResponseCode = http.POST("{}");
+
+    // Vérifier la réponse
+    if (httpResponseCode > 0)
+    {
+        String response = http.getString();
+
+        // Parse de la réponse JSON
+        const size_t capacity = 10 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(2) + 1024;
+        DynamicJsonDocument doc(capacity);
+        deserializeJson(doc, response);
+
+        // Vérifier le statut
+        if (doc["status"] == true)
+        {
+            JsonArray data = doc["data"];
+
+            // Parcourir les objets dans "data"
+            for (JsonObject printerObj : data)
+            {
+                float jobCost = printerObj["cost"]["total_cost"];
+                Serial.print("prix du fichier : "); //ATTENTION PRINT IN
+                Serial.print(jobCost);              //ATTENTION PRINT IN
+                prix = jobCost;
+            }
+        }
+        else
+        {
+            Serial.println("Erreur lors de la requête POST: " + String(httpResponseCode));
+        }
+    }
+    return prix;
+}
+
 int cancel_impression(int id)
 {
     HTTPClient http;
